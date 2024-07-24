@@ -97,6 +97,23 @@ jobs:
           ./src/scenario_simulator_v2/.github/workflows/workflow.sh ./src/scenario_simulator_v2/test_runner/scenario_test_runner/config/workflow.txt global_frame_rate:=20
         shell: bash
 
+      - name: Snyk test
+        uses: snyk/actions/node@master
+        continue-on-error: true # To make sure that the initial implementation would not stop the ci build
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --unmanaged --org=demo_cpp_c
+
+      - name: Snyk monitor
+        uses: snyk/actions/node@master
+        continue-on-error: true # To make sure that the initial implementation would capture all OSS info
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
+          args: --unmanaged --org=demo_cpp_c
+
 #      - name: Basic test
 #        run: |
 #          source install/setup.bash
