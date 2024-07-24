@@ -99,17 +99,17 @@ jobs:
 
       - name: Snyk test
         uses: snyk/actions/node@master
-        continue-on-error: true # To make sure that the initial implementation would not stop the ci build
+        continue-on-error: false # To make sure that the initial implementation would not stop the ci build
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_TOKEN: ${{ matrix.SNYK_TOKEN }}
         with:
           args: --unmanaged --org=demo_cpp_c
 
       - name: Snyk monitor
         uses: snyk/actions/node@master
-        continue-on-error: true # To make sure that the initial implementation would capture all OSS info
+        continue-on-error: false # To make sure that the initial implementation would capture all OSS info
         env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_TOKEN: ${{ matrix.SNYK_TOKEN }}
         with:
           command: monitor
           args: --unmanaged --org=demo_cpp_c
