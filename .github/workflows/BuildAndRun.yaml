@@ -24,7 +24,10 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     timeout-minutes: 180
     container: ros:${{ matrix.rosdistro }}
+    environment: matrix
     env:
+      ORG_ID: demo_cpp_c
+      SNYK_TOKEN: "${{ secrets.SNYK_TOKEN }}"
       DEBIAN_FRONTEND: noninteractive
     strategy:
       fail-fast: false
@@ -103,7 +106,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ matrix.SNYK_TOKEN }}
         with:
-          args: --unmanaged --org=demo_cpp_c
+          args: --unmanaged --org=${ORG_ID}
 
       - name: Snyk monitor
         uses: snyk/actions/node@master
@@ -112,7 +115,7 @@ jobs:
           SNYK_TOKEN: ${{ matrix.SNYK_TOKEN }}
         with:
           command: monitor
-          args: --unmanaged --org=demo_cpp_c
+          args: --unmanaged --org=${ORG_ID}
 
 #      - name: Basic test
 #        run: |
