@@ -54,7 +54,7 @@ jobs:
       - name: Search packages in this repository
         id: list_packages
         run: |
-          echo package_list=$(colcon list --names-only | tr '\n' ' ' | cut -d ' ' -f 1 ) >> $GITHUB_OUTPUT
+          echo package_list=$(colcon list --names-only | tr '\n' ' ' ) >> $GITHUB_OUTPUT
 
       - name: Show target packages
         run: |
@@ -93,12 +93,12 @@ jobs:
           colcon test-result --verbose
         shell: bash
 
-#      - name: Scenario test
-#        run: |
-#          source install/setup.bash
-#          source install/local_setup.bash
-#          ./src/scenario_simulator_v2/.github/workflows/workflow.sh ./src/scenario_simulator_v2/test_runner/scenario_test_runner/config/workflow.txt global_frame_rate:=20
-#        shell: bash
+      - name: Scenario test
+        run: |
+          source install/setup.bash
+          source install/local_setup.bash
+          ./src/scenario_simulator_v2/.github/workflows/workflow.sh ./src/scenario_simulator_v2/test_runner/scenario_test_runner/config/workflow.txt global_frame_rate:=20
+        shell: bash
 
       - name: Snyk test
         uses: snyk/actions/node@master
