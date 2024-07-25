@@ -116,13 +116,12 @@ jobs:
         run: |
           pwd
           find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \)
-          sudo apt install docker-ce docker-ce-cli containerd.io
         shell: bash
         
       - name: install docker
         run: |
           pwd
-          sudo apt install docker-ce docker-ce-cli containerd.io
+          sudo apt install docker-cli
         shell: bash
         
       - name: Snyk test docker
