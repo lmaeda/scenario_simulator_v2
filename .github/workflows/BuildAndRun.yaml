@@ -75,9 +75,13 @@ jobs:
       - name: list files
         run: |
           pwd
-          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \)
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step01.zip
         shell: bash
         
+      - uses: actions/download-artifact@v3
+        with:
+          name: my_CPP_Step01.zip
+       
       - name: Build packages
         run: |
           source /opt/ros/${{ matrix.rosdistro }}/setup.bash
@@ -87,9 +91,13 @@ jobs:
       - name: list files
         run: |
           pwd
-          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \)
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step02.zip
         shell: bash
         
+      - uses: actions/download-artifact@v3
+        with:
+          name: my_CPP_Step02.zip
+       
       - name: Colcon test
         run: |
           source /opt/ros/${{ matrix.rosdistro }}/setup.bash
@@ -115,13 +123,17 @@ jobs:
       - name: list files
         run: |
           pwd
-          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \)
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step03.zip
         shell: bash
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: my_CPP_Step03.zip
         
       - name: install docker
         run: |
           pwd
-          sudo apt install docker-ce-cli
+          sudo apt-get install docker-ce docker-ce-cli containerd.io || true
         shell: bash
         
       - name: Snyk test docker
