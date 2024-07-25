@@ -67,7 +67,7 @@ jobs:
       - name: install utilities
         run: |
           apt-get update
-          apt-get install -y mailx zip
+          apt-get install -y mailutils zip
         shell: bash
         
 #      - name: Resolve rosdep
