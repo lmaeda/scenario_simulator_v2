@@ -81,7 +81,7 @@ jobs:
       - name: list files
         run: |
           pwd
-          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) -print0 | zip my_CPP_Step01.zip -@
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step01.zip
         shell: bash
         
       - uses: actions/download-artifact@v3
