@@ -64,6 +64,12 @@ jobs:
         run: |
           vcs import src < src/scenario_simulator_v2/dependency_${{ matrix.rosdistro }}.repos
 
+      - name: install docker and zip
+        run: |
+          pwd
+          sudo apt-get install docker-ce docker-ce-cli containerd.io zip || true
+        shell: bash
+        
       - name: Resolve rosdep
         run: |
           apt-get update
@@ -129,12 +135,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: my_CPP_Step03.zip
-        
-      - name: install docker
-        run: |
-          pwd
-          sudo apt-get install docker-ce docker-ce-cli containerd.io || true
-        shell: bash
         
       - name: Snyk test docker
         run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
