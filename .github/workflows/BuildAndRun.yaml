@@ -67,7 +67,7 @@ jobs:
       - name: install docker and zip
         run: |
           apt-get update
-          apt-get install -y docker-ce docker-ce-cli zip
+          apt-get install -y zip
         shell: bash
         
       - name: Resolve rosdep
@@ -136,11 +136,11 @@ jobs:
         with:
           name: my_CPP_Step03.zip
         
-      - name: Snyk test docker
-        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
+#      - name: Snyk test docker
+#        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
 
-      - name: Snyk monitor docker
-        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "monitor" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2" || true # *1
+#      - name: Snyk monitor docker
+#        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "monitor" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2" || true # *1
 
       - name: Snyk test
         uses: snyk/actions/node@master
