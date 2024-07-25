@@ -119,29 +119,23 @@ jobs:
         shell: bash
         
       - name: Snyk test docker
-        run: docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
+        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
 
       - name: Snyk monitor docker
-        run: docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "monitor" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2" || true # *1
+        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "monitor" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2" || true # *1
 
       - name: Snyk test
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would not stop the ci build
         with:
-          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 ../../
+          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 ../
 
       - name: Snyk monitor
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would capture all OSS info
         with:
           command: monitor
-          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 ../../
-
-      - name: Snyk test docker
-        run: docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
-
-      - name: Snyk monitor docker
-        run: docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "monitor" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2" || true # *1
+          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 ../
 
 #      - name: Basic test
 #        run: |
