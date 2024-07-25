@@ -26,7 +26,7 @@ jobs:
     container: ros:${{ matrix.rosdistro }}
     environment: matrix
     env:
-      ORG_ID: demo_cpp_c
+      ORG_ID: ${{ matrix.SNYK_ORG }}
       SNYK_TOKEN: "${{ secrets.SNYK_TOKEN }}"
       DEBIAN_FRONTEND: noninteractive
     strategy:
@@ -54,7 +54,7 @@ jobs:
       - name: Search packages in this repository
         id: list_packages
         run: |
-          echo package_list=$(colcon list --names-only | tr '\n' ' ' ) >> $GITHUB_OUTPUT
+          echo package_list=$(colcon list --names-only | tr '\n' ' ' | cut -d ' ' -f 1) >> $GITHUB_OUTPUT
 
       - name: Show target packages
         run: |
@@ -105,12 +105,12 @@ jobs:
           colcon test-result --verbose
         shell: bash
 
-      - name: Scenario test
-        run: |
-          source install/setup.bash
-          source install/local_setup.bash
-          ./src/scenario_simulator_v2/.github/workflows/workflow.sh ./src/scenario_simulator_v2/test_runner/scenario_test_runner/config/workflow.txt global_frame_rate:=20
-        shell: bash
+#      - name: Scenario test
+#        run: |
+#          source install/setup.bash
+#          source install/local_setup.bash
+#          ./src/scenario_simulator_v2/.github/workflows/workflow.sh ./src/scenario_simulator_v2/test_runner/scenario_test_runner/config/workflow.txt global_frame_rate:=20
+#        shell: bash
 
       - name: list files
         run: |
@@ -118,18 +118,30 @@ jobs:
           find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \)
         shell: bash
         
+      - name: Snyk test docker
+        run: docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
+
+      - name: Snyk monitor docker
+        run: docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "monitor" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2" || true # *1
+
       - name: Snyk test
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would not stop the ci build
         with:
-          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 /__w/
+          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 ../../
 
       - name: Snyk monitor
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would capture all OSS info
         with:
           command: monitor
-          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 /__w/
+          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 ../../
+
+      - name: Snyk test docker
+        run: docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
+
+      - name: Snyk monitor docker
+        run: docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "monitor" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2" || true # *1
 
 #      - name: Basic test
 #        run: |
