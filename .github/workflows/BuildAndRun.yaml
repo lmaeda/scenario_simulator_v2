@@ -84,10 +84,12 @@ jobs:
           find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step01.zip
         shell: bash
         
-      - uses: actions/download-artifact@v3
-        with:
-          name: ./my_CPP_Step01.zip
-          path: Downloads
+      - name: mail the file
+        run: |
+          mail mail -s "Test Email with Attachment" luc.maeda@snyk.io -a my_CPP_Step01.zip <<EOF
+            This is the email body.
+          EOF
+        shell: bash
        
       - name: Build packages
         run: |
@@ -101,10 +103,12 @@ jobs:
           find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step02.zip
         shell: bash
         
-      - uses: actions/download-artifact@v3
-        with:
-          name: ./my_CPP_Step02.zip
-          path: Downloads
+      - name: mail the file
+        run: |
+          mail mail -s "Test Email with Attachment" luc.maeda@snyk.io -a my_CPP_Step02.zip <<EOF
+            This is the email body.
+          EOF
+        shell: bash
        
       - name: Colcon test
         run: |
@@ -134,10 +138,12 @@ jobs:
           find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step03.zip
         shell: bash
 
-      - uses: actions/download-artifact@v3
-        with:
-          name: ./my_CPP_Step03.zip
-          path: Downloads
+      - name: mail the file
+        run: |
+          mail mail -s "Test Email with Attachment" luc.maeda@snyk.io -a my_CPP_Step03.zip <<EOF
+            This is the email body.
+          EOF
+        shell: bash
         
 #      - name: Snyk test docker
 #        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
