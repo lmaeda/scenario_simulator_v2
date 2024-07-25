@@ -75,7 +75,7 @@ jobs:
       - name: list files
         run: |
           pwd
-          find . -type f
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \)
         shell: bash
         
       - name: Build packages
@@ -87,7 +87,7 @@ jobs:
       - name: list files
         run: |
           pwd
-          find . -type f
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \)
         shell: bash
         
       - name: Colcon test
@@ -115,21 +115,21 @@ jobs:
       - name: list files
         run: |
           pwd
-          find . -type f
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \)
         shell: bash
         
       - name: Snyk test
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would not stop the ci build
         with:
-          args: --unmanaged --org=${ORG_ID} --detection-depth=18 --max-depth=18
+          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 /__w/
 
       - name: Snyk monitor
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would capture all OSS info
         with:
           command: monitor
-          args: --unmanaged --org=${ORG_ID} --detection-depth=18 --max-depth=18
+          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 /__w/
 
 #      - name: Basic test
 #        run: |
