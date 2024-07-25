@@ -23,7 +23,7 @@ jobs:
     name: BuildAndRun
     runs-on: ${{ matrix.runs_on }}
     timeout-minutes: 180
-    container: ros:${{ matrix.rosdistro }}
+#    container: ros:${{ matrix.rosdistro }}
     environment: matrix
     env:
       ORG_ID: ${{ matrix.SNYK_ORG }}
@@ -64,11 +64,11 @@ jobs:
         run: |
           vcs import src < src/scenario_simulator_v2/dependency_${{ matrix.rosdistro }}.repos
 
-      - name: install docker and zip
-        run: |
-          pwd
-          apt-get install -y docker docker-cli zip
-        shell: bash
+#      - name: install docker and zip
+#        run: |
+#          apt-get update
+#          apt-get install -y docker docker-cli zip
+#        shell: bash
         
       - name: Resolve rosdep
         run: |
