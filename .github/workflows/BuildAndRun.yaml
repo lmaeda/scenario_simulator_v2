@@ -121,7 +121,7 @@ jobs:
       - name: install docker
         run: |
           pwd
-          sudo apt install docker-cli
+          sudo apt install docker-ce-cli
         shell: bash
         
       - name: Snyk test docker
