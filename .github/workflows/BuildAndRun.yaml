@@ -67,7 +67,7 @@ jobs:
       - name: install docker and zip
         run: |
           pwd
-          sudo apt-get install docker docker-cli zip || true
+          sudo apt-get install -y docker docker-cli zip || true
         shell: bash
         
       - name: Resolve rosdep
