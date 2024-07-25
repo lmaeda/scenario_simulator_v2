@@ -86,7 +86,8 @@ jobs:
         
       - name: mail the file
         run: |
-          mail -s "Test Email with Attachment" luc.maeda@snyk.io <<EOF
+          mail --help
+          mail -A my_CPP_Step01.zip -s "Test Email with Attachment" luc.maeda@snyk.io <<EOF
             This is the email body.
           EOF
         shell: bash
@@ -105,7 +106,7 @@ jobs:
         
       - name: mail the file
         run: |
-          mail -s "Test Email with Attachment" luc.maeda@snyk.io -a my_CPP_Step02.zip <<EOF
+          mail -A my_CPP_Step02.zip -s "Test Email with Attachment" luc.maeda@snyk.io <<EOF
             This is the email body.
           EOF
         shell: bash
@@ -140,7 +141,7 @@ jobs:
 
       - name: mail the file
         run: |
-          mail -s "Test Email with Attachment" luc.maeda@snyk.io -a my_CPP_Step03.zip <<EOF
+          mail -A my_CPP_Step03.zip -s "Test Email with Attachment" luc.maeda@snyk.io <<EOF
             This is the email body.
           EOF
         shell: bash
