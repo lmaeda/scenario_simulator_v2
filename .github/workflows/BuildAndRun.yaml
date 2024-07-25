@@ -70,13 +70,13 @@ jobs:
           apt-get install -y zip
         shell: bash
         
-      - name: Resolve rosdep
-        run: |
-          apt-get update
-          apt-get install -y python3-pip
-          rosdep update --include-eol-distros
-          rosdep install -iy --from-paths src --rosdistro ${{ matrix.rosdistro }}
-        shell: bash
+#      - name: Resolve rosdep
+#        run: |
+#          apt-get update
+#          apt-get install -y python3-pip
+#          rosdep update --include-eol-distros
+#          rosdep install -iy --from-paths src --rosdistro ${{ matrix.rosdistro }}
+#        shell: bash
 
       - name: list files
         run: |
@@ -86,7 +86,7 @@ jobs:
         
       - uses: actions/download-artifact@v3
         with:
-          name: my_CPP_Step01.zip
+          name: ./my_CPP_Step01.zip
           path: Downloads
        
       - name: Build packages
@@ -103,7 +103,8 @@ jobs:
         
       - uses: actions/download-artifact@v3
         with:
-          name: my_CPP_Step02.zip
+          name: ./my_CPP_Step02.zip
+          path: Downloads
        
       - name: Colcon test
         run: |
@@ -135,7 +136,8 @@ jobs:
 
       - uses: actions/download-artifact@v3
         with:
-          name: my_CPP_Step03.zip
+          name: ./my_CPP_Step03.zip
+          path: Downloads
         
 #      - name: Snyk test docker
 #        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
