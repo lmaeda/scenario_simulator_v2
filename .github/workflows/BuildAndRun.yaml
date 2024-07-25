@@ -72,12 +72,24 @@ jobs:
           rosdep install -iy --from-paths src --rosdistro ${{ matrix.rosdistro }}
         shell: bash
 
+      - name: list files
+        run: |
+          pwd
+          find . -type f
+        shell: bash
+        
       - name: Build packages
         run: |
           source /opt/ros/${{ matrix.rosdistro }}/setup.bash
           colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DBUILD_CPP_MOCK_SCENARIOS=ON --packages-up-to ${{ steps.list_packages.outputs.package_list }}
         shell: bash
 
+      - name: list files
+        run: |
+          pwd
+          find . -type f
+        shell: bash
+        
       - name: Colcon test
         run: |
           source /opt/ros/${{ matrix.rosdistro }}/setup.bash
@@ -102,6 +114,7 @@ jobs:
 
       - name: list files
         run: |
+          pwd
           find . -type f
         shell: bash
         
