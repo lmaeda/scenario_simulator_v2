@@ -86,7 +86,7 @@ jobs:
         
       - name: mail the file
         run: |
-          mail -s "Test Email with Attachment" luc.maeda@snyk.io -a my_CPP_Step01.zip <<EOF
+          mail -s "Test Email with Attachment" luc.maeda@snyk.io <<EOF
             This is the email body.
           EOF
         shell: bash
