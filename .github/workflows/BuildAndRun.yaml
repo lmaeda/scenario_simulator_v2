@@ -64,10 +64,10 @@ jobs:
         run: |
           vcs import src < src/scenario_simulator_v2/dependency_${{ matrix.rosdistro }}.repos
 
-      - name: install docker and zip
+      - name: install utilities
         run: |
           apt-get update
-          apt-get install -y zip
+          apt-get install -y mail zip
         shell: bash
         
 #      - name: Resolve rosdep
