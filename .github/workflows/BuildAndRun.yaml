@@ -24,10 +24,9 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     timeout-minutes: 180
     container: ros:${{ matrix.rosdistro }}
-    environment: matrix
+    environment: snyk_demo
     env:
-      ORG_ID: ${{ matrix.SNYK_ORG }}
-      SNYK_TOKEN: "${{ secrets.SNYK_TOKEN }}"
+      ORG_ID: ${{ snyk_demo.SNYK_ORG }}
       DEBIAN_FRONTEND: noninteractive
     strategy:
       fail-fast: false
@@ -35,6 +34,9 @@ jobs:
         rosdistro: [humble]
         runs_on: [ubuntu-22.04] # macos-14 is added for arm support. See also https://x.com/github/status/1752458943245189120?s=20
     steps:
+      - name: check var
+        run: echo "ORG_ID:[${ORG_ID}], DEBIAN_FRONTEND:[${DEBIAN_FRONTEND}]"
+
       - name: Suppress warnings
         run: git config --global --add safe.directory '*'
 
