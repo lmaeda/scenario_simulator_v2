@@ -26,7 +26,7 @@ jobs:
     container: ros:${{ matrix.rosdistro }}
     environment: snyk_demo
     env:
-      ORG_ID: ${{ snyk_demo.SNYK_ORG }}
+      ORG_ID: ${{ SNYK_ORG }}
       DEBIAN_FRONTEND: noninteractive
     strategy:
       fail-fast: false
