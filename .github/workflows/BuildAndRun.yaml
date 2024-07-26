@@ -67,7 +67,7 @@ jobs:
       - name: install utilities
         run: |
           apt-get update
-          apt-get install -y mailutils zip
+          apt-get install -y zip
         shell: bash
         
 #      - name: Resolve rosdep
@@ -81,15 +81,16 @@ jobs:
       - name: list files
         run: |
           pwd
-          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step01.zip
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip /tmp/my_CPP_Step01.zip
         shell: bash
         
-      - name: mail the file
+      - name: unzip the file and snyk scan
         run: |
-          mail --help
-          mail -A my_CPP_Step01.zip -s "Test Email with Attachment" luc.maeda@snyk.io <<EOF
-            This is the email body.
-          EOF
+          mkdir -p /tmp/my_CPP_Step01
+          cd /tmp/my_CPP_Step01
+          unzip /tmp/my_CPP_Step01.zip
+          snyk test --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 || true
+          snyk monitor --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2_step01 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2
         shell: bash
        
       - name: Build packages
@@ -101,14 +102,16 @@ jobs:
       - name: list files
         run: |
           pwd
-          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step02.zip
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs /tmp/zip my_CPP_Step02.zip
         shell: bash
         
-      - name: mail the file
+      - name: unzip the file and snyk scan
         run: |
-          mail -A my_CPP_Step02.zip -s "Test Email with Attachment" luc.maeda@snyk.io <<EOF
-            This is the email body.
-          EOF
+          mkdir -p /tmp/my_CPP_Step02
+          cd /tmp/my_CPP_Step02
+          unzip /tmp/my_CPP_Step02.zip
+          snyk test --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 || true
+          snyk monitor --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2_step02 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2
         shell: bash
        
       - name: Colcon test
@@ -136,22 +139,18 @@ jobs:
       - name: list files
         run: |
           pwd
-          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip my_CPP_Step03.zip
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip /tmp/my_CPP_Step03.zip
         shell: bash
 
-      - name: mail the file
+      - name: unzip the file and snyk scan
         run: |
-          mail -A my_CPP_Step03.zip -s "Test Email with Attachment" luc.maeda@snyk.io <<EOF
-            This is the email body.
-          EOF
+          mkdir -p /tmp/my_CPP_Step02
+          cd /tmp/my_CPP_Step02
+          unzip /tmp/my_CPP_Step02.zip
+          snyk test --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 || true
+          snyk monitor --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2_step03 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2
         shell: bash
         
-#      - name: Snyk test docker
-#        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "test" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18" || true # *1
-
-#      - name: Snyk monitor docker
-#        run: /usr/bin/docker run --env SNYK_TOKEN -v "/var/run/docker.sock":"/var/run/docker.sock" -v "/home/runner/work/":"/github/workspace" snyk/snyk:node  "snyk" "monitor" "--unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --target-reference=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2" || true # *1
-
       - name: Snyk test
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would not stop the ci build
