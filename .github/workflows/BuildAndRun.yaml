@@ -27,6 +27,7 @@ jobs:
     environment: snyk_demo
     env:
       DEBIAN_FRONTEND: noninteractive
+      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
