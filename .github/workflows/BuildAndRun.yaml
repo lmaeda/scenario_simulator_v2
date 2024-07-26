@@ -104,7 +104,7 @@ jobs:
       - name: list files
         run: |
           pwd
-          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs /tmp/my_CPP_Step02.zip
+          find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip /tmp/my_CPP_Step02.zip
         shell: bash
         
       - name: unzip the file and snyk scan
