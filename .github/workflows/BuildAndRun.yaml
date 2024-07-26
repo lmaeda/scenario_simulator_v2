@@ -24,6 +24,7 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     timeout-minutes: 180
     container: ros:${{ matrix.rosdistro }}
+    environment: snyk_demo
     env:
       DEBIAN_FRONTEND: noninteractive
     strategy:
