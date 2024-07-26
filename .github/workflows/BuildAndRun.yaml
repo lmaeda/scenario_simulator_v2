@@ -27,7 +27,6 @@ jobs:
     environment: snyk_demo
     env:
       DEBIAN_FRONTEND: noninteractive
-      SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
     strategy:
       fail-fast: false
       matrix:
@@ -65,6 +64,13 @@ jobs:
       - name: Install dependencies
         run: |
           vcs import src < src/scenario_simulator_v2/dependency_${{ matrix.rosdistro }}.repos
+
+      - name: Snyk monitor, initial state
+        uses: snyk/actions/node@master
+        continue-on-error: false # To make sure that the initial implementation would capture all OSS info
+        with:
+          command: monitor
+          args: --unmanaged --org=${{ vars.SNYK_ORG }} --project-name=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2 
 
       - name: install utilities
         run: |
