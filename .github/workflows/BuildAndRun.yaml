@@ -68,6 +68,8 @@ jobs:
         run: |
           apt-get update
           apt-get install -y zip
+          npm install snyk -g
+          snyk auth ${{secrets.SNYK_TOKEN}}          
         shell: bash
         
 #      - name: Resolve rosdep
