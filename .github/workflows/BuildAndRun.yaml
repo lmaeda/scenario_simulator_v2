@@ -54,7 +54,7 @@ jobs:
       - name: Search packages in this repository
         id: list_packages
         run: |
-          echo package_list=$(colcon list --names-only | tr '\n' ' ' | cut -d ' ' -f 1) >> $GITHUB_OUTPUT
+          echo package_list=$(colcon list --names-only | tr '\n' ' ' ) >> $GITHUB_OUTPUT
 
       - name: Show target packages
         run: |
@@ -72,13 +72,13 @@ jobs:
           snyk auth ${{secrets.SNYK_TOKEN}}          
         shell: bash
         
-#      - name: Resolve rosdep
-#        run: |
-#          apt-get update
-#          apt-get install -y python3-pip
-#          rosdep update --include-eol-distros
-#          rosdep install -iy --from-paths src --rosdistro ${{ matrix.rosdistro }}
-#        shell: bash
+      - name: Resolve rosdep
+        run: |
+          apt-get update
+          apt-get install -y python3-pip
+          rosdep update --include-eol-distros
+          rosdep install -iy --from-paths src --rosdistro ${{ matrix.rosdistro }}
+        shell: bash
 
       - name: list files
         run: |
@@ -86,7 +86,7 @@ jobs:
           find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip /tmp/my_CPP_Step01.zip
         shell: bash
         
-      - name: unzip the file and snyk scan
+      - name: unzip the file and snyk scan, step01
         run: |
           mkdir -p /tmp/my_CPP_Step01
           cd /tmp/my_CPP_Step01
@@ -107,7 +107,7 @@ jobs:
           find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip /tmp/my_CPP_Step02.zip
         shell: bash
         
-      - name: unzip the file and snyk scan
+      - name: unzip the file and snyk scan, step02
         run: |
           mkdir -p /tmp/my_CPP_Step02
           cd /tmp/my_CPP_Step02
@@ -131,12 +131,12 @@ jobs:
           colcon test-result --verbose
         shell: bash
 
-#      - name: Scenario test
-#        run: |
-#          source install/setup.bash
-#          source install/local_setup.bash
-#          ./src/scenario_simulator_v2/.github/workflows/workflow.sh ./src/scenario_simulator_v2/test_runner/scenario_test_runner/config/workflow.txt global_frame_rate:=20
-#        shell: bash
+      - name: Scenario test
+        run: |
+          source install/setup.bash
+          source install/local_setup.bash
+          ./src/scenario_simulator_v2/.github/workflows/workflow.sh ./src/scenario_simulator_v2/test_runner/scenario_test_runner/config/workflow.txt global_frame_rate:=20
+        shell: bash
 
       - name: list files
         run: |
@@ -144,7 +144,7 @@ jobs:
           find /__w/ -type f \( -name "*.h" -o -name "*.hpp" -o -name "*.cpp" \) | xargs zip /tmp/my_CPP_Step03.zip
         shell: bash
 
-      - name: unzip the file and snyk scan
+      - name: unzip the file and snyk scan, step03
         run: |
           mkdir -p /tmp/my_CPP_Step03
           cd /tmp/my_CPP_Step03
