@@ -190,14 +190,14 @@ jobs:
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would not stop the ci build
         with:
-          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 ../
+          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18
 
       - name: Snyk monitor
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would capture all OSS info
         with:
           command: monitor
-          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 ../
+          args: --unmanaged --org=${ORG_ID} --max-depth=18 --detection-depth=18 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2 
 
 #      - name: Basic test
 #        run: |
