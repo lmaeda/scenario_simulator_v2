@@ -67,7 +67,7 @@ jobs:
       - name: install utilities
         run: |
           apt-get update
-          apt-get install -y zip
+          apt-get install -y zip npm
           npm install snyk -g
           snyk auth ${{secrets.SNYK_TOKEN}}          
         shell: bash
