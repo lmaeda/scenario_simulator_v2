@@ -197,16 +197,16 @@ jobs:
         
       - name: Snyk test
         uses: snyk/actions/node@master
-        continue-on-error: false # To make sure that the initial implementation would not stop the ci build
+        continue-on-error: true # To make sure that the initial implementation would not stop the ci build
         with:
           args: --unmanaged --org=${{ vars.SNYK_ORG }} -d
 
       - name: Snyk monitor
         uses: snyk/actions/node@master
-        continue-on-error: false # To make sure that the initial implementation would capture all OSS info
+        continue-on-error: true # To make sure that the initial implementation would capture all OSS info
         with:
           command: monitor
-          args: --unmanaged --org=${{ vars.SNYK_ORG }} --project-name=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2 
+          args: --unmanaged --org=${{ vars.SNYK_ORG }} --project-name=scenario_simulator_v2 --target-reference=scenario_simulator_v2_stepMonitor --remote-repo-url=https://github.com/tier4/scenario_simulator_v2 
 
 #      - name: Basic test
 #        run: |
