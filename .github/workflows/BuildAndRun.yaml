@@ -76,19 +76,19 @@ jobs:
       - name: install utilities
         run: |
           apt-get update
-          apt-get install -y zip npm systemd
+          apt-get install -y zip npm
           npm install snyk -g
           snyk auth ${{secrets.SNYK_TOKEN}}          
         shell: bash
         
       # Configure Docker daemon (if necessary)
-      - name: Configure Docker daemon
-        run: |
-          mkdir -p /etc/docker
-          echo '{ "hosts": ["unix:///var/run/docker.sock"] }' > /etc/docker/daemon.json
-          systemctl start docker
-          docker --help
-        shell: bash
+#      - name: Configure Docker daemon
+#        run: |
+#          mkdir -p /etc/docker
+#          echo '{ "hosts": ["unix:///var/run/docker.sock"] }' > /etc/docker/daemon.json
+#          systemctl start docker
+#          docker --help
+#        shell: bash
 
       - name: Resolve rosdep
         run: |
