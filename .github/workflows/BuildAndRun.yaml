@@ -76,6 +76,7 @@ jobs:
       # Configure Docker daemon (if necessary)
       - name: Configure Docker daemon
         run: |
+          mkdir -p /etc/docker
           echo '{ "hosts": ["unix:///var/run/docker.sock"] }' > /etc/docker/daemon.json
           systemctl restart docker
 
