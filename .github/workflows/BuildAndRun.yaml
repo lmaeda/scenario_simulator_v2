@@ -86,7 +86,7 @@ jobs:
         run: |
           mkdir -p /etc/docker
           echo '{ "hosts": ["unix:///var/run/docker.sock"] }' > /etc/docker/daemon.json
-          systemctl restart docker
+          systemctl start docker
           docker --help
         shell: bash
 
