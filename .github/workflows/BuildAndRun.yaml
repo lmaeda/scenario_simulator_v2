@@ -73,6 +73,15 @@ jobs:
           command: monitor
           args: --unmanaged --org=${{ vars.SNYK_ORG }} --project-name=scenario_simulator_v2 --remote-repo-url=https://github.com/tier4/scenario_simulator_v2 
 
+      # Configure Docker daemon (if necessary)
+      - name: Configure Docker daemon
+        run: |
+          echo '{ "hosts": ["unix:///var/run/docker.sock"] }' > /etc/docker/daemon.json
+          systemctl restart docker
+
+      - name: Build Docker image
+        run: docker --help
+
       - name: install utilities
         run: |
           apt-get update
