@@ -67,7 +67,7 @@ jobs:
           vcs import src < src/scenario_simulator_v2/dependency_${{ matrix.rosdistro }}.repos
 
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk_binary/binary@master
+        uses: lmaeda/scenario_simulator_v2/snyk_binary@master
         env:
           SNYK_API_ENDPOINT: https://api.snyk.io
           SNYK_API_TOKEN: ${{ secrets.SNYK_TOKEN }}
