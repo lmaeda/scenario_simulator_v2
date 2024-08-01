@@ -9,7 +9,7 @@ inputs:
     description: "Additional arguments to pass to Snyk"
 runs:
   using: "docker"
-  image: "gnleong/snyk-syft-sbom:0.0.2"
+  image: "docker://gnleong/snyk-syft-sbom:0.0.2"
   env:
     FORCE_COLOR: 2
     SNYK_INTEGRATION_NAME: GITHUB_ACTIONS
