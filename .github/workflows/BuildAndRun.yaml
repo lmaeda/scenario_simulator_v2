@@ -66,6 +66,15 @@ jobs:
         run: |
           vcs import src < src/scenario_simulator_v2/dependency_${{ matrix.rosdistro }}.repos
 
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk_binary/binary@master
+        env:
+          SNYK_API_ENDPOINT: https://api.snyk.io
+          SNYK_API_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_ORG: ${{ vars.SNYK_ORG }}
+        with:
+          args: scan dir:${{ github.workspace }} -o cyclonedx-json@1.5=sbom.json
+          
       - name: Snyk monitor, initial state
         uses: snyk/actions/node@master
         continue-on-error: false # To make sure that the initial implementation would capture all OSS info
@@ -81,15 +90,6 @@ jobs:
           snyk auth ${{secrets.SNYK_TOKEN}}          
         shell: bash
         
-      # Configure Docker daemon (if necessary)
-#      - name: Configure Docker daemon
-#        run: |
-#          mkdir -p /etc/docker
-#          echo '{ "hosts": ["unix:///var/run/docker.sock"] }' > /etc/docker/daemon.json
-#          systemctl start docker
-#          docker --help
-#        shell: bash
-
       - name: Resolve rosdep
         run: |
           apt-get update
