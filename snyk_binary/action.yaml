@@ -13,7 +13,7 @@ runs:
   env:
     FORCE_COLOR: 2
     SNYK_INTEGRATION_NAME: GITHUB_ACTIONS
-    SNYK_INTEGRATION_VERSION: binary
+    SNYK_INTEGRATION_VERSION: snyk_binary
   args:
   - snyk-syft-sbom_amd64
   - ${{ inputs.args }}
