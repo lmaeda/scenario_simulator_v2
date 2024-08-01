@@ -1,0 +1,19 @@
+name: "Snyk"
+description: "Check your application with Snyk binary scans for vulnerabilties using Snyk"
+author: "Luc Maeda"
+branding:
+  icon: "alert-triangle"
+  color: "yellow"
+inputs:
+  args:
+    description: "Additional arguments to pass to Snyk"
+runs:
+  using: "docker"
+  image: "gnleong/snyk-syft-sbom:0.0.2"
+  env:
+    FORCE_COLOR: 2
+    SNYK_INTEGRATION_NAME: GITHUB_ACTIONS
+    SNYK_INTEGRATION_VERSION: binary
+  args:
+  - snyk-syft-sbom-amd64
+  - ${{ inputs.args }} 
