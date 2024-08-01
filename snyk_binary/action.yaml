@@ -15,5 +15,4 @@ runs:
     SNYK_INTEGRATION_NAME: GITHUB_ACTIONS
     SNYK_INTEGRATION_VERSION: binary
   args:
-  - snyk-syft-sbom-amd64
   - ${{ inputs.args }} 
