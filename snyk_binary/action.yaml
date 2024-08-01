@@ -5,8 +5,14 @@ branding:
   icon: "alert-triangle"
   color: "yellow"
 inputs:
+  command:
+    description: "Which command to run, defaults to test"
+    default: scan
   args:
     description: "Additional arguments to pass to Snyk"
+  json:
+    description: "Output a snyk.json file with results if running the test command"
+    default: 
 runs:
   using: "docker"
   image: "docker://gnleong/snyk-syft-sbom:0.0.3"
@@ -15,4 +21,7 @@ runs:
     SNYK_INTEGRATION_NAME: GITHUB_ACTIONS
     SNYK_INTEGRATION_VERSION: binary
   args:
-  - ${{ inputs.args }} 
+  - snyk-syft-sbom_amd64
+  - ${{ inputs.command }}
+  - ${{ inputs.args }}
+  - ${{ inputs.json }}
