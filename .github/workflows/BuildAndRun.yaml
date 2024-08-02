@@ -66,12 +66,12 @@ jobs:
         run: |
           vcs import src < src/scenario_simulator_v2/dependency_${{ matrix.rosdistro }}.repos
 
-      - name: Run Snyk to check for vulnerabilities
-        uses: lmaeda/scenario_simulator_v2/snyk_binary@master
-        env:
-          SNYK_API_ENDPOINT: https://api.snyk.io
-          SNYK_API_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          SNYK_ORG: ${{ vars.SNYK_ORG }}
+#      - name: Run Snyk to check for vulnerabilities
+#        uses: lmaeda/scenario_simulator_v2/snyk_binary@master
+#        env:
+#          SNYK_API_ENDPOINT: https://api.snyk.io
+#          SNYK_API_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#          SNYK_ORG: ${{ vars.SNYK_ORG }}
 #        with:
 #          args: /opt/snyk-syft-sbom/bin/snyk-syft-sbom_amd64 scan dir:${{ github.workspace }} -o cyclonedx-json@1.5=sbom.json
           
@@ -81,7 +81,11 @@ jobs:
           image: gnleong/snyk-syft-sbom:latest
           options: -v ${{ github.workspace }}:/app -e SNYK_ORG=${{ vars.SNYK_ORG }} -e SNYK_API_TOKEN=${{ secrets.SNYK_TOKEN }} -e SNYK_API_ENDPOINT=https://api.snyk.io
           run: |
-            /opt/snyk-syft-sbom/bin/snyk-syft-sbom_amd64 scan -o spdx2.3+json=sbom.json dir:/app
+            /opt/snyk-syft-sbom/bin/snyk-syft-sbom_amd64 scan -o cyclonedx-json@1.5=sbom.json dir:/app
+        env:
+          SNYK_API_ENDPOINT: https://api.snyk.io
+          SNYK_API_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_ORG: ${{ vars.SNYK_ORG }}
 
       - name: Snyk monitor, initial state
         uses: snyk/actions/node@master
@@ -232,6 +236,18 @@ jobs:
         with:
           command: monitor
           args: --unmanaged --org=${{ vars.SNYK_ORG }} --project-name=scenario_simulator_v2 --target-reference=scenario_simulator_v2_stepMonitor --remote-repo-url=https://github.com/tier4/scenario_simulator_v2 
+
+      - name: Run snyk-syft-sbom post-build
+        uses: addnab/docker-run-action@v3
+        with:
+          image: gnleong/snyk-syft-sbom:latest
+          options: -v ${{ github.workspace }}:/app -e SNYK_ORG=${{ vars.SNYK_ORG }} -e SNYK_API_TOKEN=${{ secrets.SNYK_TOKEN }} -e SNYK_API_ENDPOINT=https://api.snyk.io
+          run: |
+            /opt/snyk-syft-sbom/bin/snyk-syft-sbom_amd64 scan -o cyclonedx-json@1.5=sbom.json dir:/app
+        env:
+          SNYK_API_ENDPOINT: https://api.snyk.io
+          SNYK_API_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          SNYK_ORG: ${{ vars.SNYK_ORG }}
 
 #      - name: Basic test
 #        run: |
